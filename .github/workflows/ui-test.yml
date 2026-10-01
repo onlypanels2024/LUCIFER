@@ -24,6 +24,13 @@ jobs:
         with:
           gradle-version: "8.9"
 
+      - name: Install Android 17 SDK platform
+        run: |
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          $SDKM --list 2>/dev/null | grep -E "platforms;android-3[6-9]" | sort -u
+          yes | $SDKM "platforms;android-37" > /dev/null || yes | $SDKM "platforms;android-37.0" > /dev/null
+          ls "$ANDROID_HOME/platforms" | tee sdk-platforms.txt
+
       - name: Get the AI engine (llama.cpp)
         run: git clone --depth 1 --branch "$(cat LLAMA_CPP_VERSION)" https://github.com/ggml-org/llama.cpp.git app/src/main/cpp/llama.cpp
 
@@ -62,6 +69,7 @@ jobs:
         run: |
           mkdir -p /tmp/r && cp -r ui-results/. /tmp/r/ 2>/dev/null || true
           tail -200 build-log.txt > /tmp/r/build-log-tail.txt 2>/dev/null || true
+          cp sdk-platforms.txt /tmp/r/ 2>/dev/null || true
           git config user.name "ui-test"
           git config user.email "ui-test@users.noreply.github.com"
           git checkout --orphan ui-results
