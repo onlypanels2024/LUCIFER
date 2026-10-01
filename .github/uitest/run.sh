@@ -29,9 +29,13 @@ echo "test model link: $(curl -sIL -o /dev/null -w '%{http_code}' $TEST_MODEL)" 
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 adb logcat -c
 
-# 1. First launch, no model
-main;                                       shot first-launch
-$UI tap "Add a model";                      shot settings-top
+# 1. First launch: Lucifer starts fetching its own brain automatically
+main;                                       shot first-launch-auto-download
+sleep 10;                                   shot first-launch-progress
+hook --es task state
+hook --es task canceldl                     # too big for the virtual phone; use a tiny test model instead
+main; sleep 2;                              shot first-launch-manual
+$UI tap "Choose a different model";         shot settings-top
 swipe;                                      shot settings-model
 $UI tap "Download a model";                 shot download-dialog
 back
@@ -64,6 +68,9 @@ back
 settings; swipe;                            shot model-ready
 back
 
+# start Tor now so it has plenty of time to connect before the private test
+hook --es task tor --ez on true
+
 # 3. Chat offline (web off)
 hook --es task web --ez on false
 hook --es task temp --ef value 0.3
@@ -77,20 +84,14 @@ hook --es task state
 type_msg "Now make it about the moon instead"
 wait_reply 240;                             shot reply-followup
 
-# 5. Web search on, new chat
+# 6. Private mode (built-in Tor) — switched on before step 3
 hook --es task web --ez on true
-$UI tapx "New chat";                        shot new-chat-web-on
-type_msg "Who won the 2022 FIFA World Cup final?"
-sleep 4;                                    shot searching
-wait_reply 300;                             shot reply-web
-swipe;                                      shot reply-web-sources
-
-# 6. Private mode (built-in Tor)
 echo "real address of the test machine: $(curl -s https://api.ipify.org)" | tee $OUT/tor-check.txt
-hook --es task tor --ez on true
+echo "tor phase: $(hook --es task torphase)" | tee -a $OUT/tor-check.txt
 settings
 swipe; swipe;                               shot privacy-connecting
 echo "tor address 1: $(hook --es task torip)" | tee -a $OUT/tor-check.txt
+echo "tor phase: $(hook --es task torphase)" | tee -a $OUT/tor-check.txt
 settings; swipe; swipe; sleep 20;           shot privacy-connected
 hook --es task newid | tee -a $OUT/tor-check.txt
 sleep 10
@@ -103,6 +104,17 @@ sleep 5;                                    shot private-searching
 wait_reply 360;                             shot reply-private
 hook --es task state
 
+# 5. Web search on, new chat (normal, not private)
+hook --es task tor --ez on false
+hook --es task web --ez on true
+hook --es task web --ez on true
+$UI tapx "New chat";                        shot new-chat-web-on
+type_msg "Who won the 2022 FIFA World Cup final?"
+sleep 4;                                    shot searching
+wait_reply 300;                             shot reply-web
+swipe;                                      shot reply-web-sources
+
+
 # 7. Chats list, options, voice button
 $UI tapx "Chats";                           shot chats-list
 $UI longtap "World Cup";                    shot chat-options
@@ -113,7 +125,7 @@ back
 
 # 8. Long-press copy menu on a reply
 main
-$UI longtap "Malta";                        shot copy-menu
+$UI longtap "Argentina";                    shot copy-menu
 back
 
 # 9. Relaunch to be sure everything survives a restart

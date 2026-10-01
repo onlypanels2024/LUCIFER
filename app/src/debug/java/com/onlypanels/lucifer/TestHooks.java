@@ -37,6 +37,12 @@ public class TestHooks extends BroadcastReceiver {
             return;
         } else if ("newid".equals(task)) {
             result = "newid=" + TorManager.get(c).newIdentity();
+        } else if ("canceldl".equals(task)) {
+            long id = p.downloadId();
+            if (id > 0) ((android.app.DownloadManager) c.getSystemService(Context.DOWNLOAD_SERVICE)).remove(id);
+            p.setDownloadId(-1);
+        } else if ("torphase".equals(task)) {
+            result = TorManager.get(c).bootstrapPhase();
         } else if ("state".equals(task)) {
             result = Brain.get(c).state() + " | " + Brain.get(c).detail() + " | busy=" + Brain.get(c).busy()
                     + " | download=" + ModelFiles.downloadStatus(c) + " | tor=" + TorManager.get(c).ready();

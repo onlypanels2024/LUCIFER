@@ -16,8 +16,11 @@ import java.util.List;
 /** Finding, downloading and checking model files. Models live in Lucifer's own folder on the phone. */
 final class ModelFiles {
     static final class Suggestion {
-        final String name, note, url;
-        Suggestion(String name, String note, String url) { this.name = name; this.note = note; this.url = url; }
+        final String name, note, url, size;
+        Suggestion(String name, String note, String url) {
+            this.name = name; this.note = note; this.url = url;
+            this.size = note.substring(note.lastIndexOf('·') + 1).trim();
+        }
     }
 
     static final Suggestion[] SUGGESTIONS = {
@@ -29,7 +32,15 @@ final class ModelFiles {
                     "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf"),
     };
 
+    /** Lucifer's own brain, downloaded automatically on first run. */
+    static final Suggestion DEFAULT = SUGGESTIONS[0];
+
     private ModelFiles() {}
+
+    static boolean onMeteredNetwork(Context c) {
+        android.net.ConnectivityManager cm = (android.net.ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm == null || cm.isActiveNetworkMetered();
+    }
 
     static File dir(Context c) {
         File d = new File(c.getExternalFilesDir(null), "models");

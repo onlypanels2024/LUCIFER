@@ -156,6 +156,7 @@ public class MainActivity extends Activity implements Brain.Listener {
     @Override
     protected void onPause() {
         super.onPause();
+        handler.removeCallbacks(setupPoll);
         brain.clearListener(this);
     }
 
@@ -226,18 +227,71 @@ public class MainActivity extends Activity implements Brain.Listener {
         return box;
     }
 
+    private TextView setupProgress;
+
+    /** First run: Lucifer fetches its own brain (automatically on Wi-Fi, one tap on mobile data). */
     private View noModelCard() {
+        if (!prefs.autoSetupDone() && ModelFiles.downloadStatus(this) == null && !ModelFiles.onMeteredNetwork(this)) {
+            prefs.setAutoSetupDone(true);
+            ModelFiles.startDownload(this, ModelFiles.DEFAULT.url);
+        }
         LinearLayout c = Ui.card(this);
-        c.addView(Ui.text(this, "Lucifer needs a brain", 20, Ui.TEXT, true));
-        TextView t = Ui.text(this, "Lucifer runs an AI model right here on your phone — no account, no subscription. "
-                + "Add a model once (a .gguf file, about 5 GB for the best ones) and you're set.", 15, Ui.MUTED, false);
-        t.setPadding(0, Ui.dp(this, 8), 0, Ui.dp(this, 4));
-        c.addView(t);
-        android.widget.Button add = Ui.button(this, "Add a model", true);
-        add.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
-        c.addView(add);
+        String status = ModelFiles.downloadStatus(this);
+        if (status != null) {
+            c.addView(Ui.text(this, "Getting Lucifer's brain ready", 20, Ui.TEXT, true));
+            setupProgress = Ui.text(this, status, 16, Ui.PURPLE_SOFT, false);
+            setupProgress.setPadding(0, Ui.dp(this, 10), 0, 0);
+            c.addView(setupProgress);
+            TextView t = Ui.text(this, "Downloading " + ModelFiles.DEFAULT.name + " (" + ModelFiles.DEFAULT.size
+                    + "). This happens once. You can leave the app; it carries on in the background and Lucifer "
+                    + "is ready as soon as it finishes.", 14, Ui.MUTED, false);
+            t.setPadding(0, Ui.dp(this, 10), 0, 0);
+            c.addView(t);
+            handler.removeCallbacks(setupPoll);
+            handler.postDelayed(setupPoll, 1000);
+        } else {
+            setupProgress = null;
+            c.addView(Ui.text(this, "Lucifer needs its brain", 20, Ui.TEXT, true));
+            TextView t = Ui.text(this, "Lucifer's AI runs right here on your phone — no account, no subscription. "
+                    + "It needs a one-time download of " + ModelFiles.DEFAULT.size
+                    + (ModelFiles.onMeteredNetwork(this) ? ". You're on mobile data, so connect to Wi-Fi or tap below to use data." : "."),
+                    15, Ui.MUTED, false);
+            t.setPadding(0, Ui.dp(this, 8), 0, Ui.dp(this, 4));
+            c.addView(t);
+            android.widget.Button go = Ui.button(this, "Download Lucifer's brain (" + ModelFiles.DEFAULT.size + ")", true);
+            go.setOnClickListener(v -> {
+                prefs.setAutoSetupDone(true);
+                String err = ModelFiles.startDownload(this, ModelFiles.DEFAULT.url);
+                if (err != null) Toast.makeText(this, err, Toast.LENGTH_LONG).show();
+                render();
+            });
+            c.addView(go);
+        }
+        TextView other = Ui.text(this, "Choose a different model", 14, Ui.PURPLE_SOFT, false);
+        other.setPadding(0, Ui.dp(this, 14), 0, 0);
+        other.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
+        c.addView(other);
         return c;
     }
+
+    private final android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private final Runnable setupPoll = new Runnable() {
+        @Override
+        public void run() {
+            if (setupProgress == null || isFinishing()) return;
+            String done = ModelFiles.finishDownload(MainActivity.this);
+            if (done != null) {
+                Toast.makeText(MainActivity.this, done, Toast.LENGTH_LONG).show();
+                brain.ensureLoaded();
+                render();
+                return;
+            }
+            String st = ModelFiles.downloadStatus(MainActivity.this);
+            if (st == null) { render(); return; }
+            setupProgress.setText(st);
+            handler.postDelayed(this, 1000);
+        }
+    };
 
     private View failedCard() {
         LinearLayout c = Ui.card(this);

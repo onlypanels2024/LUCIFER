@@ -47,6 +47,9 @@ final class Prefs {
     int torRotateMinutes() { return p.getInt("torRotate", 5); }
     void setTorRotateMinutes(int v) { p.edit().putInt("torRotate", v).apply(); }
 
+    boolean autoSetupDone() { return p.getBoolean("autoSetupDone", false); }
+    void setAutoSetupDone(boolean v) { p.edit().putBoolean("autoSetupDone", v).apply(); }
+
     long currentChat() { return p.getLong("currentChat", -1); }
     void setCurrentChat(long v) { p.edit().putLong("currentChat", v).apply(); }
 }

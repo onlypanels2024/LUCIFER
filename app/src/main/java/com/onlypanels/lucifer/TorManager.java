@@ -95,7 +95,9 @@ final class TorManager {
         if (s == null) return false;
         try {
             String v = s.getInfo("status/circuit-established");
-            return v != null && v.trim().equals("1");
+            if (v != null && v.trim().equals("1")) return true;
+            String phase = s.getInfo("status/bootstrap-phase");
+            return phase != null && phase.contains("PROGRESS=100");
         } catch (Exception e) {
             return false;
         }
@@ -110,8 +112,13 @@ final class TorManager {
     boolean waitUntilReady(long timeoutMs) {
         if (!bound) main.post(this::start);
         long end = System.currentTimeMillis() + timeoutMs;
+        long lastLog = 0;
         while (System.currentTimeMillis() < end) {
             if (ready()) return true;
+            if (System.currentTimeMillis() - lastLog > 10_000) {
+                lastLog = System.currentTimeMillis();
+                Log.i(TAG, "waiting: " + bootstrapPhase());
+            }
             try { Thread.sleep(500); } catch (InterruptedException e) { return false; }
         }
         return ready();
@@ -133,6 +140,18 @@ final class TorManager {
     }
 
     long lastRotation() { return lastRotation; }
+
+    /** Tor's own description of how far it has got connecting, e.g. "PROGRESS=45 TAG=loading_descriptors". */
+    String bootstrapPhase() {
+        TorService s = service;
+        if (s == null) return "service not bound yet";
+        try {
+            String p = s.getInfo("status/bootstrap-phase");
+            return p == null ? "no answer from Tor" : p;
+        } catch (Exception e) {
+            return "error " + e;
+        }
+    }
 
     /** The address websites currently see, checked through Tor. Run on a background thread. */
     String visibleAddress() {
