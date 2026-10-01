@@ -40,7 +40,8 @@ final class ModelFiles {
 
     static List<File> list(Context c) {
         File[] fs = dir(c).listFiles((d, n) -> n.toLowerCase().endsWith(".gguf"));
-        List<File> out = new ArrayList<>(fs == null ? new ArrayList<>() : Arrays.asList(fs));
+        List<File> out = new ArrayList<>();
+        if (fs != null) out.addAll(Arrays.asList(fs));
         out.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
         return out;
     }

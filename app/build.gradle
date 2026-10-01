@@ -7,7 +7,7 @@ def runNumber = System.getenv("GITHUB_RUN_NUMBER")
 
 android {
     namespace 'com.onlypanels.lucifer'
-    compileSdk 35
+    compileSdk 37
 
     defaultConfig {
         applicationId "com.onlypanels.lucifer"
