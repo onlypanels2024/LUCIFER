@@ -63,6 +63,7 @@ jobs:
         run: |
           mkdir -p /tmp/r && cp -r ui-results/. /tmp/r/ 2>/dev/null || true
           tail -200 build-log.txt > /tmp/r/build-log-tail.txt 2>/dev/null || true
+          grep -B2 -A6 -E "error:|warning: \[|e: " build-log.txt | head -300 > /tmp/r/build-errors.txt 2>/dev/null || true
           git config user.name "ui-test"
           git config user.email "ui-test@users.noreply.github.com"
           git checkout --orphan ui-results
