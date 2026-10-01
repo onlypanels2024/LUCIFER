@@ -1,0 +1,17 @@
+←
+Settings
+PERSONALITY
+Tell Lucifer who it is and how to talk to you. It reads this before every chat.
+You are Lucifer, my personal assistant. Be direct, clear and helpful.
+Reset to default
+AI MODEL
+No model yet. Download one below, or choose a .gguf file you already have.
+Downloading… 1% · 88 MB of 4.9 GB
+meta-llama-3.1-8b-instruct-abliterated.Q4_K_M.gguf
+4.9 GB · tap to use
+&#128465;
+Download a model
+Choose a .gguf file on this phone
+Bigger models are smarter but slower. On a Galaxy S25 Ultra, 7B–8B models in Q4_K_M size work best.
+WEB SEARCH & PRIVACY
+Turn web search on or off with the &#127760; button next to the message box. Searches use DuckDuckGo: no account, no cookies, nothing saved to your Google history. Lucifer never asks for your location.

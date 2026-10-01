@@ -1,0 +1,21 @@
+←
+Settings
+Downloading… 28% · 141 MB of 491 MB
+qwen2.5-0.5b-instruct-q4_k_m.gguf
+491 MB · tap to use
+&#128465;
+Download a model
+Choose a .gguf file on this phone
+Bigger models are smarter but slower. On a Galaxy S25 Ultra, 7B–8B models in Q4_K_M size work best.
+WEB SEARCH & PRIVACY
+Turn web search on or off with the &#127760; button next to the message box. Searches use DuckDuckGo: no account, no cookies, nothing saved to your Google history. Lucifer never asks for your location.
+Private mode (built-in Tor)
+Sends every search through the Tor network so websites see a random server, often in another country — never your real address. Searches are a bit slower. If Tor can't connect, Lucifer won't search rather than search unprotected.
+Private mode protects Lucifer's searches only. To hide your address in every app, use the free Orbot app's VPN mode.
+FINE-TUNING
+Creativity
+Precise
+Balanced
+Creative
+Precise sticks to facts; Creative is better for stories and ideas.
+Memory

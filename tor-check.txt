@@ -1,0 +1,6 @@
+real address of the test machine: 64.236.140.200
+tor phase: data="NOTICE BOOTSTRAP PROGRESS=100 TAG=done SUMMARY="Done""
+tor address 1: data="185.100.87.166"
+tor phase: data="NOTICE BOOTSTRAP PROGRESS=100 TAG=done SUMMARY="Done""
+data="newid=true"
+tor address 2 (after new location): data="192.42.116.96"

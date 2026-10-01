@@ -1,0 +1,30 @@
+10-01 13:32:42.947  2826  2826 I UITEST  : state: NO_MODEL |  | busy=false | download=null | tor=false
+10-01 13:32:43.336  2826  2826 I UITEST  : canceldl: ok
+10-01 13:33:40.603  2826  2826 I UITEST  : download: ok
+10-01 13:34:00.546  2826  2826 I UITEST  : state: NO_MODEL |  | busy=false | download=Downloading… 32% · 158 MB of 491 MB | tor=false
+10-01 13:34:05.639  2826  2826 I UITEST  : state: NO_MODEL |  | busy=false | download=Downloading… 43% · 212 MB of 491 MB | tor=false
+10-01 13:34:10.697  2826  2826 I UITEST  : state: NO_MODEL |  | busy=false | download=Downloading… 52% · 258 MB of 491 MB | tor=false
+10-01 13:34:15.756  2826  2826 I UITEST  : state: NO_MODEL |  | busy=false | download=Downloading… 67% · 332 MB of 491 MB | tor=false
+10-01 13:34:20.820  2826  2826 I UITEST  : state: NO_MODEL |  | busy=false | download=Downloading… 76% · 376 MB of 491 MB | tor=false
+10-01 13:34:25.887  2826  2826 I UITEST  : state: NO_MODEL |  | busy=false | download=Downloading… 90% · 447 MB of 491 MB | tor=false
+10-01 13:34:30.965  2826  2826 I UITEST  : state: NO_MODEL |  | busy=false | download=Downloading… 97% · 479 MB of 491 MB | tor=false
+10-01 13:34:36.002  2826  2826 I UITEST  : state: READY | qwen2.5 0.5b instruct q4_k_m | busy=false | download=null | tor=false
+10-01 13:34:58.715  2826  2826 I UITEST  : tor: ok
+10-01 13:34:58.742  2826  2826 I UITEST  : web: ok
+10-01 13:34:58.766  2826  2826 I UITEST  : temp: ok
+10-01 13:35:38.151  2826  2826 I UITEST  : state: READY | qwen2.5 0.5b instruct q4_k_m | busy=false | download=null | tor=false
+10-01 13:36:01.503  2826  2826 I UITEST  : web: ok
+10-01 13:36:01.609  2826  2826 I UITEST  : torphase: NOTICE BOOTSTRAP PROGRESS=100 TAG=done SUMMARY="Done"
+10-01 13:36:15.825  2826  7317 I UITEST  : torip: 185.100.87.166
+10-01 13:36:15.851  2826  2826 I UITEST  : torphase: NOTICE BOOTSTRAP PROGRESS=100 TAG=done SUMMARY="Done"
+10-01 13:36:49.423  2826  2826 I LuciferTor: new Tor identity
+10-01 13:36:49.423  2826  2826 I UITEST  : newid: newid=true
+10-01 13:37:00.211  2826  7426 I UITEST  : torip: 192.42.116.96
+10-01 13:37:20.077  2826  6665 I LuciferWeb: DuckDuckGo failed: java.lang.Exception: HTTP 403
+10-01 13:37:21.637  2826  6665 I LuciferWeb: Wikipedia gave 5 results
+10-01 13:39:29.539  2826  2826 I UITEST  : state: READY | qwen2.5 0.5b instruct q4_k_m | busy=false | download=null | tor=true
+10-01 13:39:29.568  2826  2826 I UITEST  : tor: ok
+10-01 13:39:29.627  2826  2826 I UITEST  : web: ok
+10-01 13:39:29.650  2826  2826 I UITEST  : web: ok
+10-01 13:39:50.767  2826  6665 I LuciferWeb: DuckDuckGo gave 0 results
+10-01 13:39:52.737  2826  6665 I LuciferWeb: Wikipedia gave 5 results

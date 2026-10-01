@@ -1,0 +1,17 @@
+☰
+Lucifer
+Private web · qwen2.5 0.5b instruct q4_k_m
+＋
+⚙
+What is the capital city of Malta?
+The capital city of Malta is Valletta.
+Sources
+[1] Valletta  ·  en.wikipedia.org
+[2] Mdina  ·  en.wikipedia.org
+[3] Outline of Malta  ·  en.wikipedia.org
+[4] Malta (island)  ·  en.wikipedia.org
+[5] Capital city  ·  en.wikipedia.org
+&#127760;
+Message Lucifer
+&#127908;
+➤

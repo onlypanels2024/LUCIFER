@@ -1,0 +1,10 @@
+
+> Task :app:compileDebugJavaWithJavac
+Note: /home/runner/work/LUCIFER/LUCIFER/app/src/main/java/com/onlypanels/lucifer/Ui.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics
+> Task :app:mergeLibDexDebug
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:mergeProjectDexDebug

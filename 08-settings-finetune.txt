@@ -1,0 +1,27 @@
+←
+Settings
+FINE-TUNING
+Creativity
+Precise
+Balanced
+Creative
+Precise sticks to facts; Creative is better for stories and ideas.
+Memory
+Short (2k)
+Normal (4k)
+Long (8k)
+How much of the chat Lucifer keeps in mind. Longer uses more memory and takes longer to load.
+Reply length
+Short
+Normal
+Long
+The most Lucifer will write in one reply.
+Speed (CPU cores)
+4
+6
+8
+6 is usually fastest on the S25 Ultra. Fewer cores keeps the phone cooler.
+CHATS
+Chats are saved only on this phone.
+Delete all chats
+Lucifer 1.0.9 · AI runs on this phone with llama.cpp

@@ -1,0 +1,32 @@
+←
+Settings
+Sends every search through the Tor network so websites see a random server, often in another country — never your real address. Searches are a bit slower. If Tor can't connect, Lucifer won't search rather than search unprotected.
+Change location every
+2 min
+5 min
+10 min
+Lucifer asks Tor for a new route and IP address this often.
+&#128994;  Websites currently see: 185.100.87.166  (not your real address)
+New location now
+Private mode protects Lucifer's searches only. To hide your address in every app, use the free Orbot app's VPN mode.
+FINE-TUNING
+Creativity
+Precise
+Balanced
+Creative
+Precise sticks to facts; Creative is better for stories and ideas.
+Memory
+Short (2k)
+Normal (4k)
+Long (8k)
+How much of the chat Lucifer keeps in mind. Longer uses more memory and takes longer to load.
+Reply length
+Short
+Normal
+Long
+The most Lucifer will write in one reply.
+Speed (CPU cores)
+4
+6
+8
+6 is usually fastest on the S25 Ultra. Fewer cores keeps the phone cooler.

@@ -1,0 +1,13 @@
+☰
+Lucifer
+Offline · qwen2.5 0.5b instruct q4_k_m
+＋
+⚙
+Write a short two line poem about the sea
+Whispers of the ocean, vast and deep, Silent yet mighty, it flows on.
+Now make it about the moon instead
+Moonlit sky, vast and deep, Silent yet mighty, it flows on.
+&#127760;
+Message Lucifer
+&#127908;
+➤
