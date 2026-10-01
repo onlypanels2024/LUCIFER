@@ -1,0 +1,79 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Each GitHub build gets a higher version number so the phone accepts it as an update.
+def runNumber = System.getenv("GITHUB_RUN_NUMBER")
+
+android {
+    namespace 'com.onlypanels.lucifer'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.onlypanels.lucifer"
+        minSdk 26
+        targetSdk 34
+        versionCode runNumber ? runNumber.toInteger() : 1
+        versionName "1.0." + (runNumber ?: "0")
+
+        ndk {
+            // arm64 for real phones; x86_64 only so it can be tested on a virtual phone
+            abiFilters 'arm64-v8a', 'x86_64'
+        }
+        externalNativeBuild {
+            cmake {
+                // the AI engine is always built fully optimised, even for test builds
+                arguments '-DCMAKE_BUILD_TYPE=Release'
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path 'src/main/cpp/CMakeLists.txt'
+            version '3.22.1'
+        }
+    }
+
+    // Fixed signing key so every new build installs as an update and keeps your chats.
+    signingConfigs {
+        release {
+            storeFile file('release.jks')
+            storePassword 'lucifer-app'
+            keyAlias 'lucifer'
+            keyPassword 'lucifer-app'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    // Built-in Tor for Private mode (Guardian Project, makers of Orbot)
+    implementation 'info.guardianproject:tor-android:0.4.9.13'
+    implementation 'info.guardianproject:jtorctl:0.4.5.7'
+}

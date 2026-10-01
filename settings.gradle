@@ -1,0 +1,18 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        // Guardian Project (makers of Orbot) publish the Tor library here
+        maven { url "https://raw.githubusercontent.com/guardianproject/gpmaven/master" }
+    }
+}
+rootProject.name = "Lucifer"
+include ':app'
