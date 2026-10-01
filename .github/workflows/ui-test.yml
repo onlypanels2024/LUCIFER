@@ -24,19 +24,6 @@ jobs:
         with:
           gradle-version: "8.9"
 
-      - name: Install Android 17 SDK platform
-        run: |
-          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          $SDKM --list 2>/dev/null | grep -E "platforms;android-3[6-9]" | sort -u
-          P="$ANDROID_HOME/platforms"
-          [ -d "$P/android-37.0" ] || yes | $SDKM "platforms;android-37.0" > /dev/null
-          # this Gradle plugin looks for "android-37"; the SDK calls it "android-37.0"
-          if [ ! -d "$P/android-37" ]; then
-            cp -r "$P/android-37.0" "$P/android-37"
-            sed -i 's/platforms;android-37.0/platforms;android-37/' "$P/android-37/package.xml"
-          fi
-          ls "$ANDROID_HOME/platforms" | tee sdk-platforms.txt
-
       - name: Get the AI engine (llama.cpp)
         run: git clone --depth 1 --branch "$(cat LLAMA_CPP_VERSION)" https://github.com/ggml-org/llama.cpp.git app/src/main/cpp/llama.cpp
 
@@ -46,6 +33,7 @@ jobs:
       - name: Check the suggested model download links
         run: |
           mkdir -p ui-results
+          curl -s https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/maven-metadata.xml | grep -o "<version>[^<]*" | tail -15 > ui-results/agp-versions.txt || true
           for u in $(grep -o 'https://huggingface.co/[^"]*\.gguf' app/src/main/java/com/onlypanels/lucifer/ModelFiles.java); do
             echo "$(curl -sIL -o /dev/null -w '%{http_code}' "$u") $(curl -sIL "$u" | grep -i '^content-length' | tail -1 | tr -d '\r') $u" | tee -a ui-results/model-links.txt
           done
@@ -75,7 +63,6 @@ jobs:
         run: |
           mkdir -p /tmp/r && cp -r ui-results/. /tmp/r/ 2>/dev/null || true
           tail -200 build-log.txt > /tmp/r/build-log-tail.txt 2>/dev/null || true
-          cp sdk-platforms.txt /tmp/r/ 2>/dev/null || true
           git config user.name "ui-test"
           git config user.email "ui-test@users.noreply.github.com"
           git checkout --orphan ui-results

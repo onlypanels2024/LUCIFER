@@ -23,19 +23,6 @@ jobs:
         with:
           gradle-version: "8.9"
 
-      - name: Install Android 17 SDK platform
-        run: |
-          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          $SDKM --list 2>/dev/null | grep -E "platforms;android-3[6-9]" | sort -u
-          P="$ANDROID_HOME/platforms"
-          [ -d "$P/android-37.0" ] || yes | $SDKM "platforms;android-37.0" > /dev/null
-          # this Gradle plugin looks for "android-37"; the SDK calls it "android-37.0"
-          if [ ! -d "$P/android-37" ]; then
-            cp -r "$P/android-37.0" "$P/android-37"
-            sed -i 's/platforms;android-37.0/platforms;android-37/' "$P/android-37/package.xml"
-          fi
-          ls "$ANDROID_HOME/platforms"
-
       - name: Get the AI engine (llama.cpp)
         run: git clone --depth 1 --branch "$(cat LLAMA_CPP_VERSION)" https://github.com/ggml-org/llama.cpp.git app/src/main/cpp/llama.cpp
 

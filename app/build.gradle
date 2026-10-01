@@ -7,7 +7,7 @@ def runNumber = System.getenv("GITHUB_RUN_NUMBER")
 
 android {
     namespace 'com.onlypanels.lucifer'
-    compileSdk 37
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.onlypanels.lucifer"
@@ -74,6 +74,6 @@ android {
 
 dependencies {
     // Built-in Tor for Private mode (Guardian Project, makers of Orbot)
-    implementation 'info.guardianproject:tor-android:0.4.9.13'
+    implementation 'info.guardianproject:tor-android:0.4.8.21'
     implementation 'info.guardianproject:jtorctl:0.4.5.7'
 }
