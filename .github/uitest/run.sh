@@ -42,8 +42,9 @@ back
 
 # 2. Download a tiny model through the app's own downloader
 hook --es task download --es url "$TEST_MODEL"
-adb shell am start -W -n $PKG/.SettingsActivity > /dev/null
-sleep 8; swipe;                             shot downloading
+settings() { main; $UI tapx "Settings"; sleep 2; }
+settings
+sleep 6; swipe;                             shot downloading
 for i in $(seq 1 60); do
   s=$(hook --es task state); echo "$s"
   echo "$s" | grep -q "download=null" && break
@@ -60,7 +61,7 @@ if ! adb shell ls /sdcard/Android/data/$PKG/files/models/ | grep -q gguf; then
 fi
 sleep 5
 back
-adb shell am start -W -n $PKG/.SettingsActivity > /dev/null; sleep 3; swipe; shot model-ready
+settings; swipe;                            shot model-ready
 back
 
 # 3. Chat offline (web off)
@@ -85,11 +86,15 @@ wait_reply 300;                             shot reply-web
 swipe;                                      shot reply-web-sources
 
 # 6. Private mode (built-in Tor)
+echo "real address of the test machine: $(curl -s https://api.ipify.org)" | tee $OUT/tor-check.txt
 hook --es task tor --ez on true
-adb shell am start -W -n $PKG/.SettingsActivity > /dev/null; sleep 3
+settings
 swipe; swipe;                               shot privacy-connecting
-sleep 45;                                   shot privacy-connected
-$UI tap "New location now"; sleep 30;       shot privacy-new-location
+echo "tor address 1: $(hook --es task torip)" | tee -a $OUT/tor-check.txt
+settings; swipe; swipe; sleep 20;           shot privacy-connected
+hook --es task newid | tee -a $OUT/tor-check.txt
+sleep 10
+echo "tor address 2 (after new location): $(hook --es task torip)" | tee -a $OUT/tor-check.txt
 back
 main
 $UI tapx "New chat"
@@ -116,6 +121,6 @@ adb shell am force-stop $PKG
 main; sleep 10;                             shot after-restart
 
 adb logcat -d > $OUT/logcat.txt
-grep -E "FATAL|AndroidRuntime|UITEST|LuciferTor|llama_model_load|load_tensors: |error" $OUT/logcat.txt | head -300 > $OUT/summary.txt
+grep -E "FATAL|E AndroidRuntime|UITEST|LuciferTor|LuciferWeb|Lucifer  |Bootstrapped" $OUT/logcat.txt | head -300 > $OUT/summary.txt
 echo "---- summary ----"; cat $OUT/summary.txt | head -80
 exit 0

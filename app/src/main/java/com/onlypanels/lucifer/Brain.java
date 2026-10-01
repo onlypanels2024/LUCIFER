@@ -98,7 +98,8 @@ final class Brain {
                 setState(State.FAILED, Native.lastError(0));
             } else {
                 handle = h;
-                setState(State.READY, Native.describe(h));
+                android.util.Log.i("Lucifer", "loaded " + Native.describe(h));
+                setState(State.READY, prettyName(path));
             }
         });
     }
@@ -216,6 +217,12 @@ final class Brain {
                 if (listener != null) listener.onReplyDone(chatId, text, finalSources, finalNote);
             });
         });
+    }
+
+    /** "Llama-3.2-3B-Instruct-Q4_K_M.gguf" → "Llama 3.2 3B Instruct Q4_K_M" */
+    static String prettyName(String path) {
+        String n = new File(path).getName().replaceFirst("(?i)\\.gguf$", "");
+        return n.replace('-', ' ');
     }
 
     /** Shortens a long message into something a search engine can use. */

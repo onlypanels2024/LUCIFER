@@ -47,9 +47,19 @@ final class WebSearch {
     /** Searches and reads the top pages. Never throws; returns what it could find. */
     static List<Result> search(String query, int maxResults, int pagesToRead, int charsPerPage) {
         List<Result> results = new ArrayList<>();
-        try { results = duckDuckGo(query, maxResults); } catch (Exception ignored) {}
+        try {
+            results = duckDuckGo(query, maxResults);
+            android.util.Log.i("LuciferWeb", "DuckDuckGo gave " + results.size() + " results" + (viaTor ? " (Tor)" : ""));
+        } catch (Exception e) {
+            android.util.Log.i("LuciferWeb", "DuckDuckGo failed: " + e);
+        }
         if (results.isEmpty()) {
-            try { results = wikipedia(query, maxResults); } catch (Exception ignored) {}
+            try {
+                results = wikipedia(query, maxResults);
+                android.util.Log.i("LuciferWeb", "Wikipedia gave " + results.size() + " results");
+            } catch (Exception e) {
+                android.util.Log.i("LuciferWeb", "Wikipedia failed: " + e);
+            }
         }
         int read = 0;
         for (Result r : results) {

@@ -25,6 +25,18 @@ public class TestHooks extends BroadcastReceiver {
             TorManager.get(c).sync();
         } else if ("temp".equals(task)) {
             p.setTemperature(i.getFloatExtra("value", 0.8f));
+        } else if ("torip".equals(task)) {
+            final PendingResult pr = goAsync();
+            new Thread(() -> {
+                TorManager tm = TorManager.get(c);
+                String ip = tm.waitUntilReady(40_000) ? tm.visibleAddress() : "not ready";
+                Log.i("UITEST", "torip: " + ip);
+                pr.setResultData(ip);
+                pr.finish();
+            }).start();
+            return;
+        } else if ("newid".equals(task)) {
+            result = "newid=" + TorManager.get(c).newIdentity();
         } else if ("state".equals(task)) {
             result = Brain.get(c).state() + " | " + Brain.get(c).detail() + " | busy=" + Brain.get(c).busy()
                     + " | download=" + ModelFiles.downloadStatus(c) + " | tor=" + TorManager.get(c).ready();
